@@ -3,10 +3,12 @@ console.log("usersClient.js called");
 /// Frontend functionalities for user login and registration ///
 const registerForm = document.getElementById("registerForm");
 const registerError = document.getElementsByClassName("registerError")[0];
+const loginForm = document.getElementById("loginForm");
+const loginError = document.getElementsByClassName("loginError")[0];
 
-console.log(registerForm);
-console.log(registerError);
 
+// Send registeration info to route.js then database
+// Stores the info if the username is not taken
 if (registerForm !== null && registerError !== null) {
   // Handles registration submission
   registerForm.onsubmit = async (event) => {
@@ -18,7 +20,7 @@ if (registerForm !== null && registerError !== null) {
       userName: registerFormData.get("userName"),
       password: registerFormData.get("password"),
     };
-
+    
     // Get data from registerUser API
     const resRawData = await fetch("/registerUser", {
       method: "POST",
@@ -27,7 +29,7 @@ if (registerForm !== null && registerError !== null) {
       },
       body: JSON.stringify(userData),
     });
-
+    
     // If response is not returned successfully
     if (!resRawData.ok) {
       console.log("Response status ", resRawData.status);
@@ -49,6 +51,58 @@ if (registerForm !== null && registerError !== null) {
     else {
       registerError.style.display = "none";
       window.location.href = "/index.html";
+    }
+  };
+}
+
+
+if (loginForm !== null && loginError !== null) {
+  // Handles login submission
+  loginForm.onsubmit = async (event) => {
+    event.preventDefault();
+
+    const loginFormData = new FormData(loginForm);
+
+    const userData = {
+      userName: loginFormData.get("userName"),
+      password: loginFormData.get("password"),
+    };
+
+    const resRawData = await fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    //If response is not returned successfully
+    if (!resRawData.ok) {
+      console.log("Response status ", resRawData.status);
+    }
+
+    // Parses the response raw data (as JSON) and returns the users
+    // array wrapped in JavaScript object.
+
+    const resData = await resRawData.json();
+    console.log("Got logged in user(s) ", resData);
+
+    //if pw is incorrect give an error
+
+    if (!resData.users.length) {
+      loginError.style.display = "block";
+    }
+    // debugger;
+
+    // if (!resRawData.users.length) {
+    //   loginError.style.display = "block";
+    // }    
+
+
+    //redirect to the music list page
+    else {
+      loginError.style.display = "none";
+      window.location.href = "/musicList.html";
     }
   };
 }
