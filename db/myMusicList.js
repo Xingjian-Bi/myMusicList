@@ -28,7 +28,53 @@ function myMusicListDB() {
       await client.close();
       console.log("closing db connection");
     }  
+  };
 
+  myDB.findUserName = async function (userName) {
+    console.log("Finding user called");
+    let client;
+    try {
+      // client = new MongoClient(URL, { useUnifiedTopology: true });
+      client = new MongoClient(url);
+      console.log("Connecting to db");
+      await client.connect();
+      console.log("Connected to db");
+      const db = client.db(DB_name);
+      const allUsers = db.collection("users");
+      // returns the array of users in users collection that match
+      // the passed in userName query
+      return await allUsers.find(userName).toArray();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("Closing connection to db");
+      await client.close();
+    }
+  };
+
+  // This function is responsible for registering a new user in database
+  // We pass in user (containing userName and password) from server-side to insert into
+  // the users collection
+  myDB.registerUser = async function (user) {
+    console.log("Register User called");
+    let client;
+    try {
+      // client = new MongoClient(URL, { useUnifiedTopology: true });
+      client = new MongoClient(url);
+      console.log("Connecting to db");
+      await client.connect();
+      console.log("Connected to db");
+      const db = client.db(DB_name);
+      const allUsers = db.collection("users");
+      // returns the response of creating (inserting) a user
+      // in the users collection
+      return await allUsers.insertOne(user);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("Closing connection to db");
+      await client.close();
+    }
   };
 
   return myDB;

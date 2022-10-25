@@ -9,6 +9,7 @@ router.post("/registerUser", async function (req, res) {
   // Contains the name and password of user from register
   // form request
   const user = req.body;
+  console.log("~~~~~~~~" + user.userName);
   // We only utilize userName when querying for a user
   // upon user registration
   const userName = {
@@ -20,13 +21,13 @@ router.post("/registerUser", async function (req, res) {
     // Response of finding a user
     // Returns an array of users that match the query of passed userName
     const findUserRes = await myMusicListDB.findUserName(userName);
-    console.log("Get user (user name) from game-sharing-db ", findUserRes);
+    console.log("Get user (user name) from db ", findUserRes);
     // const createUserRes
 
     // If findUserRes array is empty then we call registerUser function
     if (!findUserRes.length) {
       const registerUserRes = await myMusicListDB.registerUser(user);
-      console.log("Created user in game-sharing-db", registerUserRes);
+      console.log("Created user in db", registerUserRes);
     }
     res.send({ users: findUserRes });
   } catch (error) {

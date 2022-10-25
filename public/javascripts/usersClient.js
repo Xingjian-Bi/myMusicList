@@ -7,12 +7,8 @@ const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementsByClassName("loginError")[0];
 
 
-console.log(registerForm);
-console.log(registerError);
-
-
-
-
+// Send registeration info to route.js then database
+// Stores the info if the username is not taken
 if (registerForm !== null && registerError !== null) {
   // Handles registration submission
   registerForm.onsubmit = async (event) => {
@@ -24,7 +20,7 @@ if (registerForm !== null && registerError !== null) {
       userName: registerFormData.get("userName"),
       password: registerFormData.get("password"),
     };
-
+    
     // Get data from registerUser API
     const resRawData = await fetch("/registerUser", {
       method: "POST",
@@ -33,7 +29,7 @@ if (registerForm !== null && registerError !== null) {
       },
       body: JSON.stringify(userData),
     });
-
+    
     // If response is not returned successfully
     if (!resRawData.ok) {
       console.log("Response status ", resRawData.status);

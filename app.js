@@ -19,6 +19,7 @@ app.use(
 
 app.use(router);
 
+// Search html file under "public" folder
 app.use(express.static("public"));
 // app.get("/", (req, res) => {
 //   res.send("Hi");
