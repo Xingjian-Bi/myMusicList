@@ -35,4 +35,34 @@ router.post("/registerUser", async function (req, res) {
   }
 });
 
+
+router.get("/musicList", (req, res) => {
+  res.sendFile(__dirname, "../public", "musicList.html");
+});
+
+router.post("/login", async (req, res) => {
+  const user = req.body;
+  try{
+    const userRes = await myMusicListDB.authenticate(user);
+    console.log("login: get user from db", userRes);
+    if (userRes.length){
+      req.session.currUserName = user.userName;
+    }
+    // if (userRes){
+    //   res.redirect("/musicList");
+    // }
+
+    res.send({ users: userRes });
+
+  } catch(error){
+    console.log("login: error", error);
+    res.status(400).send({err: error});
+
+  }
+
+
+  // res.send("logged in! my music list is here: ");
+
+});
+
 module.exports = router;
