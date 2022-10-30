@@ -5,29 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
+    <link rel="stylesheet" href="./stylesheets/registration.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <div class="container">
+<!--     <div class="container">
       <div class="welcomeSection">
         <h1 class="welcomeTitle">My Music List</h1>
-        <!-- <div class="welcomeImages">
-          <img
-            id="welcomeImage1"
-            src="/images/controller_icon.png"
-            alt="controllerIcon"
-          />
-          <img
-            id="welcomeImage2"
-            src="/images/computer_icon.png"
-            alt="PC_icon"
-          /> -->
+
         </div>
         <h2>Share your favorite music with others!</h2>
-      </div>
+
+      </div> -->
+
+<div class="container-fluid" id="registration-container">
+
       <div class="row registerRow">
+        <div class="col-md-4"></div>
+
+      <div class="col-md-4 bg-light rounded" id="registration-bg">
+
           <form id="registerForm">
-            <div class="registerTitle">Register</div>
-            <!-- <div class="registerError">User name already exists</div> -->
+            <h1 class="registerTitle">Register</h1>
+            <div class="registrationError">User name already exists</div>
             <div>
               <div class="registerUsername">
                 <label class="form-label">User name</label>
@@ -39,7 +44,8 @@
                   required
                 />
               </div>
-              <div class="registerPassword">
+
+              <div class="registerPassword mb-3">
                 <label class="form-label">Password</label>
                 <input
                   class="form-control"
@@ -49,18 +55,40 @@
                   required
                 />
               </div>
-              <div class="registerSection">
+
+              <div class="registerSection mb-3 text-center">
                 <button type="submit" class="btn btn-primary">Sign Up</button>
-                <!-- <div>
-                  <a href="index.html">Navigate to login page</a>
-                </div> -->
               </div>
+
+            <hr />
+            <div class="text-center">
+              <p class="secondfont">Already have an account?</p>
+              <a
+                class="btn btn-primary"
+                href="login.html"
+                role="button"
+                >Log In</a
+              >
+            </div>
+
             </div>
           </form>
+        </div>
+
+          <div class="col-md-4"></div>
         
+
       </div>
+</div>
+
     </div>
     
     <script src="./javascripts/usersClient.js"></script>
+        <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+      crossorigin="anonymous"
+    ></script>
+    
   </body>
 </html>
