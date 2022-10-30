@@ -9,9 +9,7 @@ router.post("/registerUser", async function (req, res) {
   // Contains the name and password of user from register
   // form request
   const user = req.body;
-  console.log("~~~~~~~~" + user.userName);
-  // We only utilize userName when querying for a user
-  // upon user registration
+  // Check if user name already exists
   const userName = {
     userName: user.userName,
   };
@@ -22,13 +20,13 @@ router.post("/registerUser", async function (req, res) {
     // Returns an array of users that match the query of passed userName
     const findUserRes = await myMusicListDB.findUserName(userName);
     console.log("Get user (user name) from db ", findUserRes);
-    // const createUserRes
 
     // If findUserRes array is empty then we call registerUser function
     if (!findUserRes.length) {
       const registerUserRes = await myMusicListDB.registerUser(user);
       console.log("Created user in db", registerUserRes);
     }
+    // Send findUserRes to frontend and it will update accordingly
     res.send({ users: findUserRes });
   } catch (error) {
     console.log("login user error message: ", error);
@@ -36,11 +34,7 @@ router.post("/registerUser", async function (req, res) {
   }
 });
 
-
-router.get("/musicList", (req, res) => {
-  res.sendFile(__dirname, "../public", "musicList.html");
-});
-
+// route for logining in
 router.post("/login", async (req, res) => {
   const user = req.body;
   try{
@@ -58,12 +52,56 @@ router.post("/login", async (req, res) => {
   } catch(error){
     console.log("login: error", error);
     res.status(400).send({err: error});
-
   }
-
-
   // res.send("logged in! my music list is here: ");
-
 });
+
+// route for showing all recorded music
+router.get("/getMusic", async function (req, res) {
+  try {
+    // Response of getting all game posts (as an array) from gameposts
+    // collection in database
+    const musicRes = await myMusicListDB.getMusic();
+    console.log("Got all music from db ", musicRes);
+    res.send({ recordedMusic: musicRes });
+  } catch (error) {
+    console.log("Get game posts error message: ", error);
+    res.status(400).send({ err: error });
+  }
+});
+
+// route for searching a specific piece of music
+router.post("/recordMusic", async function (req, res) {
+  // Construct music from request
+  const music = req.body;
+  // Check if music already already exists
+  const musicInfo = {
+    musicName: music.title,
+    musician: music.musician
+  };
+  // Pass music and musician and check if it already exist in db
+  try {
+    // Response of finding a music
+    // Returns an array of music that matches
+    const searchMusic = await myMusicListDB.searchMusic(musicInfo);
+    console.log("Get music from db ", searchMusic);
+
+    // If findMusic array is empty then we call recordMusic function
+    if (!searchMusic.length) {
+      const recordMusic = await myMusicListDB.recordMusic(music);
+      console.log("Recorded music in db", recordMusic);
+    }
+    // Send findMusic to frontend and it will update accordingly
+    res.send({ existedMusic: searchMusic });
+
+  } catch (error) {
+    console.log("login user error message: ", error);
+    res.status(400).send({ err: error });
+  }
+  // What does this do?
+  // res.sendFile(__dirname, "../public", "musicList.html");
+});
+
+
 
 module.exports = router;
