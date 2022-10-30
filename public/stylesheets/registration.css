@@ -8,18 +8,19 @@ h1{
 	text-align: center;
 }
 
-#login-container{
+#registration-container{
 	margin-top: 12%;
 
 }
 
-#login-bg{
+#registration-bg{
 	padding-top: 2%;
 	padding-bottom: 2%;
 }
 
 
-.loginError{
+
+.registrationError{
 	text-align: center;
 	color:  red;
 	display: none;

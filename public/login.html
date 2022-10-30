@@ -13,18 +13,20 @@
 		/>
 	</head>
 	<body>
-		<h1>log in</h1>
-		<div class="loginError">User name already exists</div>
+		
 
-		<div class="container-fluid">
+		<div class="container-fluid" id="login-container">
 			<div class="row">
-				<div class="col-md-3"></div>
+				<div class="col-md-4"></div>
 
-				<div class="col-md-6">
+				<div class="col-md-4 bg-light rounded" id="login-bg">
+					<h1>log in</h1>
+					<div class="loginError">Incorrect username or password</div>
+
 					<form action="/login" method="POST" id="loginForm">
 						<div class="mb-3">
 							<label for="userlogin" class="form-label"
-								>User</label
+								>Username</label
 							>
 							<input
 								class="form-control"
@@ -38,9 +40,7 @@
 							</div>
 						</div>
 						<div class="mb-3">
-							<label
-								for="passwordlogin"
-								class="form-label"
+							<label for="passwordlogin" class="form-label"
 								>Password</label
 							>
 							<input
@@ -51,12 +51,30 @@
 								required="true"
 							/>
 						</div>
-						<button type="submit" class="btn btn-primary">
-							Login
-						</button>
+						<div class="text-center">
+							<button
+								type="submit"
+								class="btn btn-primary"
+								id="login-btn"
+							>
+								Login
+							</button>
+						</div>
+
+						<hr />
+						<div class="text-center">
+							<p class="secondfont">Don't have an account?</p>
+							<a
+								class="btn btn-primary"
+								href="registration.html"
+								role="button"
+								>Create An Account</a
+							>
+						</div>
+
 					</form>
 				</div>
-				<div class="col-md-3"></div>
+				<div class="col-md-4"></div>
 			</div>
 		</div>
 		<script src="./javascripts/usersClient.js"></script>
