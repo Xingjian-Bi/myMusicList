@@ -63,7 +63,8 @@ router.get("/getMusic", async function (req, res) {
     // collection in database
     const musicRes = await myMusicListDB.getMusic();
     console.log("Got all music from db ", musicRes);
-    res.send({ recordedMusic: musicRes });
+    // res.send({ recordedMusic: musicRes });
+    res.send(musicRes);
   } catch (error) {
     console.log("Get game posts error message: ", error);
     res.status(400).send({ err: error });
@@ -76,9 +77,10 @@ router.post("/recordMusic", async function (req, res) {
   const music = req.body;
   // Check if music already already exists
   const musicInfo = {
-    musicName: music.title,
+    title: music.title,
     musician: music.musician
   };
+
   // Pass music and musician and check if it already exist in db
   try {
     // Response of finding a music
@@ -93,6 +95,7 @@ router.post("/recordMusic", async function (req, res) {
     }
     // Send findMusic to frontend and it will update accordingly
     res.send({ existedMusic: searchMusic });
+    // res.send(searchMusic);
 
   } catch (error) {
     console.log("login user error message: ", error);

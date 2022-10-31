@@ -116,11 +116,9 @@ function myMusicListDB() {
       console.log("db connected");
       const db = client.db(DB_name);
       const musicFound = db.collection(COLLECTION_NAME);
+      const res = await musicFound.find({title: musicInfo.title, musician : musicInfo.musician}).toArray();
 
-      const res = await musicFound.find(musicInfo).toArray();
       return res;
-      // if (res.password == user.passwordlogin) return true;
-      // return false;
     }catch(error){
       console.log(error);
       // console.log(error.stack);
