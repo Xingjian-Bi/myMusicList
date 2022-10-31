@@ -162,7 +162,7 @@ function myMusicListDB() {
       await client.connect();
       const res = await client.db(DB_name).collection("music").updateOne(
         { _id: new ObjectID(musicID) },
-        { $push: { username: username, comments: comment } }
+        { $push: { comments: { username: username, comment: comment } } }
       );
       return res;
     }catch(error){
