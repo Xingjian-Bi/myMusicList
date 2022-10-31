@@ -34,21 +34,22 @@ async function loadmusic (){
       console.log("render m", m);
       const mDiv = document.createElement("div");
       // mDiv.className = "col-xs-6 col-sm-4 card";
-      mDiv.className = "col-xs-6 col-sm-4 card";
+      mDiv.className = "card";
+      mDiv.style.width = "75%";
+      mDiv.style.marginTop = "1%";
+      mDiv.style.marginLeft = "10%";
+      // mDiv.style.marginRight = "10%";
       mDiv.innerHTML = `
-        <div class="card-body">
-          <div class="card-title">
+        <div class="card-header">
             <label>Title: <output>${m.title}</output></label>
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Genre: <output>${m.genre}</output></label>
-          </div>
-          <div>
+            <br>
             <label>Musician: <output>${m.musician}</output></label>
-          </div>
-          <div>
+            <br>
             <label>Album: <output>${m.album}</output></label>
-          </div> 
+        </div> 
         </div>
         `;
       
