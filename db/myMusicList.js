@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectID} = require("mongodb");
 const url = "mongodb+srv://harry:HuQdiKKzUO43aPeD@webdev.v9plqok.mongodb.net/?retryWrites=true&w=majority";
 const DB_name = "music-list-db";
 
@@ -150,6 +150,30 @@ function myMusicListDB() {
       await client.close();
     }
   };
+
+  //create comment to the music
+  myDB.musicComment = async(musicID,comment,username) => {
+    console.log("music comment called");
+    console.log("music name:",musicID );
+    console.log("music comment:",comment );
+    let client;
+    try{
+      client = new MongoClient(url);
+      await client.connect();
+      const res = await client.db(DB_name).collection("music").updateOne(
+        { _id: new ObjectID(musicID) },
+        { $push: { username: username, comments: comment } }
+      );
+      return res;
+    }catch(error){
+      console.log(error);
+    }finally{
+      client.close();
+    }
+  };
+
+
+
 
   return myDB;
 }
