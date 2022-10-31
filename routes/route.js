@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
     const userRes = await myMusicListDB.authenticate(user);
     console.log("login: get user from db", userRes);
     if (userRes.length){
-      req.session.currUserName = user.userName;
+      req.session.userName = user.userName;
     }
     // if (userRes){
     //   res.redirect("/musicList");
@@ -102,6 +102,19 @@ router.post("/recordMusic", async function (req, res) {
   // res.sendFile(__dirname, "../public", "musicList.html");
 });
 
+//route for add music comment
+router.post("/musicComment", async (req, res)=> {
+  try{
+    const commentRes = await myMusicListDB.musicComment(req.body.musicID, req.body.comment, req.session.userName);
+    console.log("Comment added", commentRes);
+    res.redirect("/musicList.html");
+    // res.send({success: true});
+
+  }catch(error){
+    console.log("music comment error message: ", error);
+    res.status(400).send({ err: error });
+  }
+});
 
 
 module.exports = router;
