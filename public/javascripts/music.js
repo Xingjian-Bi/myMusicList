@@ -59,16 +59,19 @@ async function loadmusic (){
       const commentForm = document.createElement("form");
       const commentText = document.createElement("input");
       const commentBtn = document.createElement("button");
+      const deleteBtn = document.createElement("button");
       commentBtn.className = "btn btn-primary btn-sm";
       commentBtn.textContent = "comment";
       commentBtn.style.marginLeft = "1%";
       commentBtn.style.marginBottom = "0.3%";
+      deleteBtn.className = "btn btn-danger btn-sm float-end";
+      deleteBtn.textContent = "Delete Music";
       if (m.comments !== undefined){
         for (let i of m.comments){
           const cDiv = document.createElement("div");
           cDiv.innerHTML = `
           <div>
-            <label>Username: <output>${i.username}</output></label>
+            <label><output>${i.username}</output></label>
             <label>    : <output>${i.comment}</output></label>
           </div>
 
@@ -106,10 +109,33 @@ async function loadmusic (){
 
       });
 
+      deleteBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const resRaw = await fetch("/deleteMusic", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            {
+              musicID: m._id,
+            }),
+        });
+
+        if(!resRaw.ok){
+          alert("Music post can not be deleted");
+        }else{
+          location.reload();
+        }
+
+      });
+
 
       mDiv.appendChild(button);
       commentForm.appendChild(commentText);
       commentForm.appendChild(commentBtn);
+      commentForm.appendChild(deleteBtn);
+
       mDiv.append(commentDiv);
       mDiv.append(commentForm);
 
@@ -197,7 +223,6 @@ function addedToList(evt){
     button.replaceChild(unlike, button.firstChild);
     console.log(list);
   }
-
   
 }
 

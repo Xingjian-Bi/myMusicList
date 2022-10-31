@@ -106,7 +106,7 @@ router.post("/recordMusic", async function (req, res) {
 });
 
 //route for add music comment
-router.post("/musicComment", async (req, res)=> {
+router.post("/musicComment", async (req, res) => {
   try{
     const commentRes = await myMusicListDB.musicComment(req.body.musicID, req.body.comment, req.session.userName);
     console.log("Comment added", commentRes);
@@ -118,6 +118,22 @@ router.post("/musicComment", async (req, res)=> {
     res.status(400).send({ err: error });
   }
 });
+
+router.post("/deleteMusic", async (req, res) => {
+  try{
+    const deleteRes = await myMusicListDB.deleteMusic(req.body.musicID);
+    console.log("Music deleted", deleteRes);
+    res.redirect("/musicList.html");
+
+  }catch(error){
+    console.log("music comment error message: ", error);
+    res.status(400).send({ err: error });
+  }
+
+});
+
+
+
 
 
 module.exports = router;

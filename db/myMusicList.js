@@ -172,6 +172,23 @@ function myMusicListDB() {
     }
   };
 
+  myDB.deleteMusic = async(musicID) => {
+    let client;
+    try{
+      client = new MongoClient(url);
+      await client.connect();
+      const res = await client.db(DB_name).collection("music").deleteOne(
+        { _id: ObjectID(musicID)}
+      );
+      return res;
+    }catch(error){
+      console.log(error);
+    }finally{
+      client.close();
+    }
+
+  };
+
 
 
 
