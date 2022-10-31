@@ -23,6 +23,9 @@ async function loadmusic (){
     for (let m of music) {
     // create image in HTML
       const button = document.createElement("button");
+      button.addEventListener("click", addedToList, false);
+      button.music = m.title;
+      button.bool = true;
       const like = document.createElement("img");
       like.src = "./images/like.png";
       like.width = 30;
@@ -51,7 +54,7 @@ async function loadmusic (){
       
       mDiv.appendChild(button);
       musicDiv.appendChild(mDiv);
-
+      
     }
   }
   getMusic();
@@ -60,7 +63,7 @@ async function loadmusic (){
 
 
 
-/// Frontend functionalities for user login and registration ///
+// Create a new piece of music
 const musicForm = document.getElementById("createMusic");
 const musicError = document.getElementsByClassName("registerError")[0];
 
@@ -113,6 +116,30 @@ if (musicForm !== null && musicError !== null) {
     }
   };
 }
+
+// like button behavior
+const list = [];
+function addedToList(evt){
+  const button = evt.currentTarget;
+  const like = document.createElement("img");
+  like.src = "./images/like.png";
+  like.width = 30;
+  const unlike = document.createElement("img");
+  unlike.src = "./images/unlike.png";
+  unlike.width = 30;
+      
+  if (evt.currentTarget.bool){
+    console.log(evt.currentTarget.music);
+    list.push(button.music);
+    button.bool = false;
+    // button.children.replaceWith(unlike);
+    button.replaceChild(unlike, button.firstChild);
+    console.log(list);
+  }
+
+  
+}
+
 
 
 
