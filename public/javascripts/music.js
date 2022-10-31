@@ -23,6 +23,7 @@ async function loadmusic (){
     for (let m of music) {
     // create image in HTML
       const button = document.createElement("button");
+      button.style.marginBottom = "0.5%";
       button.addEventListener("click", addedToList, false);
       button.music = m.title;
       button.bool = true;
@@ -33,6 +34,7 @@ async function loadmusic (){
 
       console.log("render m", m);
       const mDiv = document.createElement("div");
+
       // mDiv.className = "col-xs-6 col-sm-4 card";
       mDiv.className = "card";
       mDiv.style.width = "75%";
@@ -49,12 +51,96 @@ async function loadmusic (){
             <label>Musician: <output>${m.musician}</output></label>
             <br>
             <label>Album: <output>${m.album}</output></label>
+
         </div> 
         </div>
         `;
-      
+      const commentDiv = document.createElement("div");
+      const commentForm = document.createElement("form");
+      const commentText = document.createElement("input");
+      const commentBtn = document.createElement("button");
+      const deleteBtn = document.createElement("button");
+      commentBtn.className = "btn btn-primary btn-sm";
+      commentBtn.textContent = "comment";
+      commentBtn.style.marginLeft = "1%";
+      commentBtn.style.marginBottom = "0.3%";
+      deleteBtn.className = "btn btn-danger btn-sm float-end";
+      deleteBtn.textContent = "Delete Music";
+      if (m.comments !== undefined){
+        for (let i of m.comments){
+          const cDiv = document.createElement("div");
+          cDiv.innerHTML = `
+          <div>
+            <label><output>${i.username}</output></label>
+            <label>    : <output>${i.comment}</output></label>
+          </div>
+
+          `;
+          commentDiv.appendChild(cDiv);
+        }
+      }
+
+      commentForm.addEventListener("submit", async (event) => {
+        // https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
+        event.preventDefault();
+        const text = commentText.value;
+        if (text === ""){
+          alert("comment is empty");
+          return;
+        }
+        commentForm.reset();
+        const resRaw = await fetch("/musicComment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            {
+              musicID: m._id,
+              comment: text,
+            }),
+        });
+
+        if(!resRaw.ok){
+          alert("comment can not be added");
+        }else{
+          location.reload();
+        }
+
+      });
+
+      deleteBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const resRaw = await fetch("/deleteMusic", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            {
+              musicID: m._id,
+            }),
+        });
+
+        if(!resRaw.ok){
+          alert("Music post can not be deleted");
+        }else{
+          location.reload();
+        }
+
+      });
+
+
       mDiv.appendChild(button);
+      commentForm.appendChild(commentText);
+      commentForm.appendChild(commentBtn);
+      commentForm.appendChild(deleteBtn);
+
+      mDiv.append(commentDiv);
+      mDiv.append(commentForm);
+
       musicDiv.appendChild(mDiv);
+
       
     }
   }
@@ -137,11 +223,8 @@ function addedToList(evt){
     button.replaceChild(unlike, button.firstChild);
     console.log(list);
   }
-
   
 }
-
-
 
 
 loadmusic();

@@ -162,7 +162,7 @@ function myMusicListDB() {
       await client.connect();
       const res = await client.db(DB_name).collection("music").updateOne(
         { _id: new ObjectID(musicID) },
-        { $push: { username: username, comments: comment } }
+        { $push: { comments: { username: username, comment: comment } } }
       );
       return res;
     }catch(error){
@@ -170,6 +170,23 @@ function myMusicListDB() {
     }finally{
       client.close();
     }
+  };
+
+  myDB.deleteMusic = async(musicID) => {
+    let client;
+    try{
+      client = new MongoClient(url);
+      await client.connect();
+      const res = await client.db(DB_name).collection("music").deleteOne(
+        { _id: ObjectID(musicID)}
+      );
+      return res;
+    }catch(error){
+      console.log(error);
+    }finally{
+      client.close();
+    }
+
   };
 
 
