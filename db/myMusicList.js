@@ -1,6 +1,7 @@
 const { MongoClient, ObjectID} = require("mongodb");
-const url = "mongodb+srv://harry:HuQdiKKzUO43aPeD@webdev.v9plqok.mongodb.net/?retryWrites=true&w=majority";
+const url = process.env.MONGO_URL;
 const DB_name = "music-list-db";
+
 
 function myMusicListDB() {
   const myDB = {};
@@ -78,7 +79,7 @@ function myMusicListDB() {
   };
 
   // Fetching all recorded music in db
-  myDB.getMusic = async () => {
+  myDB.getMusic = async (sortID) => {
     console.log("getting all recorded music from db");
     let client;
     try{
@@ -88,16 +89,36 @@ function myMusicListDB() {
       await client.connect();
       console.log("db connected");
       console.log("enter sort");
+      console.log("sortID", sortID);
+      console.log(typeof sortID);
       const db = client.db(DB_name);
       const musicFound = db.collection(COLLECTION_NAME);
       const query = {};
+      if (sortID === ":Alblum"){
+        const res = await musicFound.find(query).sort({ album: 1 }).toArray();
+        console.log("DB Alblum");
+        return res;
+      } else if (sortID === ":Genre"){
+        const res = await musicFound.find(query).sort({ genre: 1 }).toArray();
+        console.log("DB Genre");
+        return res;
+      }else if (sortID === ":Musician"){
+        const res = await musicFound.find(query).sort({ musician: 1 }).toArray();
+        console.log("DB Musician");
+        return res;
+      }else {
+        console.log("DB else");
+        const res = await (await musicFound.find(query).toArray()).reverse();
+        return res;
+      }
       // returns the response of querying and getting all music
       // const res = await musicFound.find(query).sort({ musician: 1 }).toArray();
-      const res = await musicFound.find(query).sort({ album: 1 }).toArray();
+      // const res = await musicFound.find(query).sort({ album: 1 }).toArray();
+      // const res = await (await musicFound.find(query).toArray()).reverse();
       // const res = await musicFound.find(query).sort({ genre: 1 }).toArray();
       
       // const res = await musicFound.find(query).sort({_id:-1}).toArray();
-      return res;
+      // return res;
       // if (res.password == user.passwordlogin) return true;
       // return false;
     }catch(error){
