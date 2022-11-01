@@ -1,0 +1,18 @@
+html body {
+    background-color: #E1EED9;
+
+}
+main{
+	margin-left: 3%;
+	margin-right: 3%;
+}
+
+#navbar-text{
+	margin-left: 1%;
+}
+#genres-select{
+	margin-bottom: 1%;
+}
+#genres-label{
+	margin-bottom: 0;
+}
