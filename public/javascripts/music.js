@@ -1,5 +1,5 @@
 console.log("music.js called");
-
+let sortOption = "time";
 // Get all music data and display
 async function loadmusic (){
   // const index = {};
@@ -9,7 +9,16 @@ async function loadmusic (){
 
   // Get all music from DB and call renderMusic
   async function getMusic() {
-    const res = await fetch("/getMusic");
+    console.log(sortOption);
+    let url = "/getMusic/:" + sortOption;
+    console.log(url);
+    // const res = await fetch("/getMusic/:sortOption");
+    const res = await fetch(url);
+
+    // Parses the response raw data (as JSON) and returns the users
+    // array wrapped in JavaScript object.
+    // const resData = await resRawData.json();
+
     const music = await res.json();
     console.log("render music", music);
     renderMusic(music);
@@ -140,10 +149,11 @@ async function loadmusic (){
       mDiv.append(commentForm);
 
       musicDiv.appendChild(mDiv);
-
-      
+   
     }
   }
+  // index.getMusic = getMusic();
+  // index.orderGetMusic = orderGetMusic();
   getMusic();
   // return index;
 }
@@ -228,4 +238,23 @@ function addedToList(evt){
 
 
 loadmusic();
+// const index = loadmusic();
+// index.getMusic();
+
+
+const sortDropDown = document.getElementById("sortSelectId");
+sortDropDown.addEventListener("change", async (event) => {
+  event.preventDefault();
+  console.log("event.target.value", event.target.value);
+
+  sortOption = event.target.value;
+  console.log("sortOption", sortOption);
+  loadmusic();
+
+});
+
+// function getOrderMusic(value){
+//   const index = loadmusic();
+//   index.orderGetMusic(value);
+// }
 

@@ -57,11 +57,11 @@ router.post("/login", async (req, res) => {
 });
 
 // route for showing all recorded music
-router.get("/getMusic", async function (req, res) {
+router.get("/getMusic/:sortID", async function (req, res) {
   try {
     // Response of getting all game posts (as an array) from gameposts
     // collection in database
-    const musicRes = await myMusicListDB.getMusic();
+    const musicRes = await myMusicListDB.getMusic(req.params.sortID);
     console.log("Got all music from db ", musicRes);
     // res.send({ recordedMusic: musicRes });
     res.send(musicRes);
