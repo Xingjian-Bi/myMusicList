@@ -24,9 +24,9 @@ The objective is build a simple backend design using express, mongoDB, HTML and 
 
 ### Slides & Video Demonstration
 
-Slides Here
+[Slides Here](https://docs.google.com/presentation/d/1RwSYsR2OH-B2uB_fhBd0DnnnSNI1Mydjoj_SuGS40jE/edit?usp=sharing)
 
-Video Here
+[Video Here](https://youtu.be/xpvoCw-G1m0)
 
 
 
