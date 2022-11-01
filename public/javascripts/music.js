@@ -24,22 +24,44 @@ async function loadmusic (){
     renderMusic(music);
   }
 
+  
+
   // Display all music fetched from getMusic
-  function renderMusic(music) {
+  async function renderMusic(music) {
     musicDiv.innerHTML = "";
     console.log("render music", music);
+    // const list = await fetch("/getList");
 
     for (let m of music) {
     // create image in HTML
-      const button = document.createElement("button");
-      button.style.marginBottom = "0.5%";
-      button.addEventListener("click", addedToList, false);
-      button.music = m.title;
-      button.bool = true;
-      const like = document.createElement("img");
-      like.src = "./images/like.png";
-      like.width = 30;
-      button.appendChild(like); 
+      const addToList = document.createElement("button");
+      addToList.style.marginBottom = "0.5%";
+      addToList.music = m.title;
+      addToList.bool = true;
+      const plusSign = document.createElement("img");
+      plusSign.src = "./images/plusSign.png";
+      plusSign.width = 30;
+      addToList.appendChild(plusSign); 
+
+      // addToList button behavior
+      
+      addToList.addEventListener("click", async(evt) => {
+        const name = evt.currentTarget.music;
+        console.log(name);
+        // list.push(button.music);
+        const newList = await fetch("/updateList", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            music: name}),
+        });
+        // list = newList;
+        // console.log("testing frontend~~~~~~~~",newList);
+        // reload my palylist
+        // loadlist();
+      });
 
       console.log("render m", m);
       const mDiv = document.createElement("div");
@@ -140,7 +162,7 @@ async function loadmusic (){
       });
 
 
-      mDiv.appendChild(button);
+      mDiv.appendChild(addToList);
       commentForm.appendChild(commentText);
       commentForm.appendChild(commentBtn);
       commentForm.appendChild(deleteBtn);
@@ -158,7 +180,46 @@ async function loadmusic (){
   // return index;
 }
 
+// Get playlist
+async function loadlist (){
+  // Create musicDiv in HTML
+  const listDiv = document.querySelector("div#list");
 
+  // Get all music from DB and call renderMusic
+  async function getList() {
+    const res = await fetch("/getList");
+    const list = await res.json();
+    console.log("render list", list);
+    renderList(list);
+  }
+
+  // Display all music fetched from getMusic
+  function renderList(list) {
+    listDiv.innerHTML = "";
+    console.log("render list", list);
+
+    for (let l of list) {
+    // create image in HTML
+      console.log("render l", l);
+      const lDiv = document.createElement("div");
+
+      // lDiv.className = "col-xs-6 col-sm-4 card";
+      lDiv.className = "card";
+      lDiv.style.width = "75%";
+      lDiv.style.marginTop = "1%";
+      lDiv.style.marginLeft = "10%";
+      // mDiv.style.marginRight = "10%";
+      lDiv.innerHTML = `
+        <div class="card-header">
+            <label>Title: <output>${l}</output></label>
+        </div>
+        `;
+      listDiv.appendChild(lDiv);
+    }
+  }
+  getList();
+  // return index;
+}
 
 // Create a new piece of music
 const musicForm = document.getElementById("createMusic");
@@ -214,29 +275,9 @@ if (musicForm !== null && musicError !== null) {
   };
 }
 
-// like button behavior
-const list = [];
-function addedToList(evt){
-  const button = evt.currentTarget;
-  const like = document.createElement("img");
-  like.src = "./images/like.png";
-  like.width = 30;
-  const unlike = document.createElement("img");
-  unlike.src = "./images/unlike.png";
-  unlike.width = 30;
-      
-  if (evt.currentTarget.bool){
-    console.log(evt.currentTarget.music);
-    list.push(button.music);
-    button.bool = false;
-    // button.children.replaceWith(unlike);
-    button.replaceChild(unlike, button.firstChild);
-    console.log(list);
-  }
-  
-}
 
 
+// loadlist();
 loadmusic();
 // const index = loadmusic();
 // index.getMusic();
