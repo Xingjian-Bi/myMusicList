@@ -62,9 +62,40 @@ router.get("/getMusic", async function (req, res) {
     // Response of getting all game posts (as an array) from gameposts
     // collection in database
     const musicRes = await myMusicListDB.getMusic();
-    console.log("Got all music from db ", musicRes);
+    // console.log("Got all music from db ", musicRes);
     // res.send({ recordedMusic: musicRes });
     res.send(musicRes);
+  } catch (error) {
+    console.log("Get game posts error message: ", error);
+    res.status(400).send({ err: error });
+  }
+});
+
+// route for showing user's playlist
+router.get("/getList", async function (req, res) {
+  try {
+    // Response of getting all game posts (as an array) from gameposts
+    // collection in database
+    
+    const listRes = await myMusicListDB.getList(req.session.userName);
+    console.log("Got user's list from db ", listRes);
+    // res.send({ recordedMusic: musicRes });
+    res.send(listRes);
+  } catch (error) {
+    console.log("Get game posts error message: ", error);
+    res.status(400).send({ err: error });
+  }
+});
+
+// route for updating user's playlist
+router.put("/updateList", async function (req, res) {
+  try {
+    // Response of getting all game posts (as an array) from gameposts
+    // collection in database
+    const listRes = await myMusicListDB.updateList(req.body.music,req.session.userName);
+    console.log("Update user's list from db ", listRes);
+    // res.send({ recordedMusic: musicRes });
+    res.send(listRes);
   } catch (error) {
     console.log("Get game posts error message: ", error);
     res.status(400).send({ err: error });
