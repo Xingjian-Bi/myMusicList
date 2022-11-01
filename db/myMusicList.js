@@ -108,6 +108,59 @@ function myMusicListDB() {
     }  
   };
 
+  // Fetching user's music list in db
+  myDB.getList = async (userName) => {
+    console.log("getting user's list from db");
+    let client;
+    try{
+      client = new MongoClient(url);
+     
+      console.log("connect to db ---");
+      await client.connect();
+      console.log("db connected");
+      const db = client.db(DB_name);
+      const usersFound = db.collection("user");
+      const res = await usersFound.find(userName).list;
+      console.log("testing getList~~~~~~~~id",res);
+
+      return res;
+      // if (res.password == user.passwordlogin) return true;
+      // return false;
+    }catch(error){
+      console.log(error);
+    }finally {
+      await client.close();
+      console.log("closing db connection");
+    }  
+  };
+  myDB.updateList = async (music, user) => {
+    console.log("getting user's list from db", user, music);
+    let client;
+    try{
+      client = new MongoClient(url);
+     
+      console.log("connect to db ---");
+      await client.connect();
+      console.log("db connected");
+      const db = client.db(DB_name);
+      const usersFound = db.collection("user");
+      const res = await usersFound.updateOne(
+        {userName : user}, 
+        {$push: {list : {music : music}}});
+        
+      console.log("testing updateList~~~~~~~~",res);
+
+      return res;
+      // if (res.password == user.passwordlogin) return true;
+      // return false;
+    }catch(error){
+      console.log(error);
+    }finally {
+      await client.close();
+      console.log("closing db connection");
+    }  
+  };
+
   // Finding if a music already exist in db
   myDB.searchMusic = async (musicInfo) => {
     console.log("search music being called");
