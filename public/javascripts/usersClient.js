@@ -1,13 +1,11 @@
 console.log("usersClient.js called");
 
-
-function login(){
+function login() {
   /// Frontend functionalities for user login and registration ///
   const registerForm = document.getElementById("registerForm");
   const registerError = document.getElementsByClassName("registrationError")[0];
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementsByClassName("loginError")[0];
-
 
   // Send registeration info to route.js then database
   // Stores the info if the username is not taken
@@ -22,7 +20,7 @@ function login(){
         userName: registerFormData.get("userName"),
         password: registerFormData.get("password"),
       };
-      
+
       // Get data from registerUser API
       const resRawData = await fetch("/registerUser", {
         method: "POST",
@@ -31,7 +29,7 @@ function login(){
         },
         body: JSON.stringify(userData),
       });
-      
+
       // If response is not returned successfully
       if (!resRawData.ok) {
         console.log("Response status ", resRawData.status);
@@ -56,7 +54,6 @@ function login(){
       }
     };
   }
-
 
   if (loginForm !== null && loginError !== null) {
     // Handles login submission
@@ -83,7 +80,7 @@ function login(){
         console.log("Response status ", resRawData.status);
       }
 
-      // warrped response with json 
+      // warrped response with json
 
       const resData = await resRawData.json();
       console.log("Got logged in user(s) ", resData);
@@ -97,8 +94,7 @@ function login(){
 
       // if (!resRawData.users.length) {
       //   loginError.style.display = "block";
-      // }    
-
+      // }
 
       //redirect to the music list page
       else {

@@ -1,7 +1,6 @@
-const { MongoClient, ObjectID} = require("mongodb");
+const { MongoClient, ObjectID } = require("mongodb");
 const url = process.env.MONGO_URL;
 const DB_name = "music-list-db";
-
 
 function myMusicListDB() {
   const myDB = {};
@@ -9,7 +8,7 @@ function myMusicListDB() {
   myDB.authenticate = async (user) => {
     console.log("enter authenticate");
     let client;
-    try{
+    try {
       client = new MongoClient(url);
       const COLLECTION_NAME = "users";
       console.log("connect to db ---");
@@ -22,13 +21,13 @@ function myMusicListDB() {
       return res;
       // if (res.password == user.passwordlogin) return true;
       // return false;
-    }catch(error){
+    } catch (error) {
       console.log(error);
       // console.log(error.stack);
-    }finally {
+    } finally {
       await client.close();
       console.log("closing db connection");
-    }  
+    }
   };
 
   myDB.findUserName = async function (userName) {
@@ -82,7 +81,7 @@ function myMusicListDB() {
   myDB.getMusic = async (sortID) => {
     console.log("getting all recorded music from db");
     let client;
-    try{
+    try {
       client = new MongoClient(url);
       const COLLECTION_NAME = "music";
       console.log("connect to db ---");
@@ -94,19 +93,22 @@ function myMusicListDB() {
       const db = client.db(DB_name);
       const musicFound = db.collection(COLLECTION_NAME);
       const query = {};
-      if (sortID === ":Alblum"){
+      if (sortID === ":Alblum") {
         const res = await musicFound.find(query).sort({ album: 1 }).toArray();
         console.log("DB Alblum");
         return res;
-      } else if (sortID === ":Genre"){
+      } else if (sortID === ":Genre") {
         const res = await musicFound.find(query).sort({ genre: 1 }).toArray();
         console.log("DB Genre");
         return res;
-      }else if (sortID === ":Musician"){
-        const res = await musicFound.find(query).sort({ musician: 1 }).toArray();
+      } else if (sortID === ":Musician") {
+        const res = await musicFound
+          .find(query)
+          .sort({ musician: 1 })
+          .toArray();
         console.log("DB Musician");
         return res;
-      }else {
+      } else {
         console.log("DB else");
         const res = await (await musicFound.find(query).toArray()).reverse();
         return res;
@@ -116,78 +118,79 @@ function myMusicListDB() {
       // const res = await musicFound.find(query).sort({ album: 1 }).toArray();
       // const res = await (await musicFound.find(query).toArray()).reverse();
       // const res = await musicFound.find(query).sort({ genre: 1 }).toArray();
-      
+
       // const res = await musicFound.find(query).sort({_id:-1}).toArray();
       // return res;
       // if (res.password == user.passwordlogin) return true;
       // return false;
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       await client.close();
       console.log("closing db connection");
-    }  
+    }
   };
 
   // Fetching user's music list in db
   myDB.getList = async (user) => {
     console.log("getting user's list from db", user);
     let client;
-    try{
+    try {
       client = new MongoClient(url);
-     
+
       console.log("connect to db ---");
       await client.connect();
       console.log("db connected");
       const db = client.db(DB_name);
       const usersFound = db.collection("users");
-      const res = await usersFound.find({userName:user}).toArray();
-      console.log("testing getList~~~~~~~~id",res);
+      const res = await usersFound.find({ userName: user }).toArray();
+      console.log("testing getList~~~~~~~~id", res);
 
       return res;
       // if (res.password == user.passwordlogin) return true;
       // return false;
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       await client.close();
       console.log("closing db connection");
-    }  
+    }
   };
 
   myDB.updateList = async (music, user) => {
     console.log("getting user's list from db", music, user);
     let client;
-    try{
+    try {
       client = new MongoClient(url);
-     
+
       console.log("connect to db ---");
       await client.connect();
       console.log("db connected");
       const db = client.db(DB_name);
       const usersFound = db.collection("users");
       const res = await usersFound.updateOne(
-        {userName : user}, 
-        {$push: {songlist : music}});
-        
-      console.log("testing updateList~~~~~~~~",res);
+        { userName: user },
+        { $push: { songlist: music } }
+      );
+
+      console.log("testing updateList~~~~~~~~", res);
 
       return res;
       // if (res.password == user.passwordlogin) return true;
       // return false;
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally {
+    } finally {
       await client.close();
       console.log("closing db connection");
-    }  
+    }
   };
 
   // Finding if a music already exist in db
   myDB.searchMusic = async (musicInfo) => {
     console.log("search music being called");
     let client;
-    try{
+    try {
       client = new MongoClient(url);
       const COLLECTION_NAME = "music";
       console.log("connect to db ---");
@@ -195,16 +198,18 @@ function myMusicListDB() {
       console.log("db connected");
       const db = client.db(DB_name);
       const musicFound = db.collection(COLLECTION_NAME);
-      const res = await musicFound.find({title: musicInfo.title, musician : musicInfo.musician}).toArray();
+      const res = await musicFound
+        .find({ title: musicInfo.title, musician: musicInfo.musician })
+        .toArray();
 
       return res;
-    }catch(error){
+    } catch (error) {
       console.log(error);
       // console.log(error.stack);
-    }finally {
+    } finally {
       await client.close();
       console.log("closing db connection");
-    }  
+    }
   };
 
   // This function is responsible for recording a music in database
@@ -231,45 +236,45 @@ function myMusicListDB() {
   };
 
   //create comment to the music
-  myDB.musicComment = async(musicID,comment,username) => {
+  myDB.musicComment = async (musicID, comment, username) => {
     console.log("music comment called");
-    console.log("music name:",musicID );
-    console.log("music comment:",comment );
+    console.log("music name:", musicID);
+    console.log("music comment:", comment);
     let client;
-    try{
+    try {
       client = new MongoClient(url);
       await client.connect();
-      const res = await client.db(DB_name).collection("music").updateOne(
-        { _id: new ObjectID(musicID) },
-        { $push: { comments: { username: username, comment: comment } } }
-      );
+      const res = await client
+        .db(DB_name)
+        .collection("music")
+        .updateOne(
+          { _id: new ObjectID(musicID) },
+          { $push: { comments: { username: username, comment: comment } } }
+        );
       return res;
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       client.close();
     }
   };
 
-  myDB.deleteMusic = async(musicID) => {
+  myDB.deleteMusic = async (musicID) => {
     let client;
-    try{
+    try {
       client = new MongoClient(url);
       await client.connect();
-      const res = await client.db(DB_name).collection("music").deleteOne(
-        { _id: ObjectID(musicID)}
-      );
+      const res = await client
+        .db(DB_name)
+        .collection("music")
+        .deleteOne({ _id: ObjectID(musicID) });
       return res;
-    }catch(error){
+    } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       client.close();
     }
-
   };
-
-
-
 
   return myDB;
 }

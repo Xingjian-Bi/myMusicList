@@ -1,7 +1,7 @@
 console.log("music.js called");
 let sortOption = "time";
 // Get all music data and display
-async function loadmusic (){
+async function loadmusic() {
   // const index = {};
 
   // Create musicDiv in HTML
@@ -24,8 +24,6 @@ async function loadmusic (){
     renderMusic(music);
   }
 
-  
-
   // Display all music fetched from getMusic
   async function renderMusic(music) {
     musicDiv.innerHTML = "";
@@ -33,7 +31,7 @@ async function loadmusic (){
     // const list = await fetch("/getList");
 
     for (let m of music) {
-    // create image in HTML
+      // create image in HTML
       const addToList = document.createElement("button");
       addToList.style.marginBottom = "0.5%";
       addToList.title = m.title;
@@ -44,10 +42,10 @@ async function loadmusic (){
       const plusSign = document.createElement("img");
       plusSign.src = "./images/plusSign.png";
       plusSign.width = 30;
-      addToList.appendChild(plusSign); 
+      addToList.appendChild(plusSign);
 
       // addToList button behavior
-      addToList.addEventListener("click", async(evt) => {
+      addToList.addEventListener("click", async (evt) => {
         const song = evt.currentTarget;
         const newList = await fetch("/updateList", {
           method: "PUT",
@@ -57,8 +55,8 @@ async function loadmusic (){
           body: JSON.stringify({
             title: song.title,
             musician: song.musician,
-            genre:song.genre,
-            album:song.genre,
+            genre: song.genre,
+            album: song.genre,
           }),
         });
         console.log("music added to user's db", newList);
@@ -99,8 +97,8 @@ async function loadmusic (){
       commentBtn.style.marginBottom = "0.3%";
       deleteBtn.className = "btn btn-danger btn-sm float-end";
       deleteBtn.textContent = "Delete Music";
-      if (m.comments !== undefined){
-        for (let i of m.comments){
+      if (m.comments !== undefined) {
+        for (let i of m.comments) {
           const cDiv = document.createElement("div");
           cDiv.innerHTML = `
           <div>
@@ -117,7 +115,7 @@ async function loadmusic (){
         // https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
         event.preventDefault();
         const text = commentText.value;
-        if (text === ""){
+        if (text === "") {
           alert("comment is empty");
           return;
         }
@@ -127,15 +125,14 @@ async function loadmusic (){
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(
-            {
-              musicID: m._id,
-              comment: text,
-            }),
+          body: JSON.stringify({
+            musicID: m._id,
+            comment: text,
+          }),
         });
-        if(!resRaw.ok){
+        if (!resRaw.ok) {
           alert("comment can not be added");
-        }else{
+        } else {
           location.reload();
         }
       });
@@ -147,14 +144,13 @@ async function loadmusic (){
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(
-            {
-              musicID: m._id,
-            }),
+          body: JSON.stringify({
+            musicID: m._id,
+          }),
         });
-        if(!resRaw.ok){
+        if (!resRaw.ok) {
           alert("Music post can not be deleted");
-        }else{
+        } else {
           location.reload();
         }
       });
@@ -165,16 +161,16 @@ async function loadmusic (){
       mDiv.append(commentDiv);
       mDiv.append(commentForm);
       musicDiv.appendChild(mDiv);
-
     }
   }
   // index.getMusic = getMusic();
   // index.orderGetMusic = orderGetMusic();
+
   getMusic();
 }
 
 // Get playlist
-async function loadlist (){
+async function loadlist() {
   // Create musicDiv in HTML
   const listDiv = document.querySelector("div#userlist");
 
@@ -182,7 +178,7 @@ async function loadlist (){
   async function getList() {
     const res = await fetch("/getList");
     const list = await res.json();
-    if (list[0].songlist){
+    if (list[0].songlist) {
       renderList(list);
     }
   }
@@ -193,7 +189,7 @@ async function loadlist (){
     console.log("render list", list);
     console.log("render songlist", list[0].songlist);
     for (let l of list[0].songlist) {
-    // create image in HTML
+      // create image in HTML
       console.log("render l", l);
       const lDiv = document.createElement("div");
 
@@ -230,9 +226,8 @@ const musicError = document.getElementsByClassName("registerError")[0];
 
 // Stores the music if it is not there yet
 if (musicForm !== null && musicError !== null) {
-  
   console.log("Trying to create a music");
-  
+
   // Handles registration submission
   musicForm.onsubmit = async (event) => {
     event.preventDefault();
@@ -242,10 +237,10 @@ if (musicForm !== null && musicError !== null) {
     const music = {
       title: musicData.get("title"),
       genre: musicData.get("genre"),
-      musician:musicData.get("musician"),
+      musician: musicData.get("musician"),
       album: musicData.get("album"),
     };
-      
+
     // Get data from searchMusic API
     const resRawData = await fetch("/recordMusic", {
       method: "POST",
@@ -267,12 +262,10 @@ if (musicForm !== null && musicError !== null) {
   };
 }
 
-
 loadlist();
 loadmusic();
 // const index = loadmusic();
 // index.getMusic();
-
 
 const sortDropDown = document.getElementById("sortSelectId");
 sortDropDown.addEventListener("change", async (event) => {
@@ -282,11 +275,9 @@ sortDropDown.addEventListener("change", async (event) => {
   sortOption = event.target.value;
   console.log("sortOption", sortOption);
   loadmusic();
-
 });
 
 // function getOrderMusic(value){
 //   const index = loadmusic();
 //   index.orderGetMusic(value);
 // }
-
