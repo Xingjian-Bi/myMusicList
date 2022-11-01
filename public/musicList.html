@@ -10,19 +10,53 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="./stylesheets/musicList.css">
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg sticky-top navbar-light">
-      <h1>Welcome to My Music List</h1>
-      <a href="index.html" class="btn btn-primary" role="button">Logout</a>
-    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" id = "navbar-text">MyMusicList</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="./musicList.html">Home</a>
+      </li>
+<!--       <li class="nav-item">
+        <a class="nav-link" href="#">Music List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Search</a>
+      </li> -->
+      <span>
+      <li class="nav-item ">
+        <a class="nav-link" href="./index.html">Logout</a>
+      </li>
+      </span>
+
+    </ul>
+<!--     <span class="nav-item  my-2 my-lg-0">
+
+      <a href="index.html" class="btn btn-primary " role="button">Logout</a>
+    </span> -->
+  </div>
+  </nav>
+
     <main>
+
       <h2>Add music to your play list</h2>
       <div class="row gx-2" id="userlist"></div>
+
       <div class="row gx-2" id="playList"></div>
       <div class="container">
-            <div class="createPostTitle">Here to upload any music that you like</div>
+            <!-- <div class="createPostTitle">Here to upload your music</div> -->
             <form id="createMusic">
+
+              <div class="row">
+                <div class="col">
+
 				<label class="form-label">Title<input
                       class="form-control"
                       type="text"
@@ -31,8 +65,10 @@
                       required
                   />
 				</label>
-                <label class="form-label">Genres</label>
-                  <select
+      </div>
+      <div class="col" id = "genres-select">
+        <label class="form-label" id = "genres-label">Genres</label>
+        <select
                     class="form-select"
                     type="form-control"
                     id="categorySelectId"
@@ -51,6 +87,8 @@
                     <option>Dance</option>
 					          <option>Others</option>
                   </select>
+            </div>
+            <div class="col">
                 <label class="form-label"
                     >Musician<input
                       class="form-control"
@@ -59,6 +97,8 @@
                  
                     />
                   </label>
+                </div>
+                <div class="col">
                 <label class="form-label"
                     >Album<input
                       class="form-control"
@@ -66,15 +106,54 @@
                       placeholder="Enter album here"
                     />
                   </label>
+                </div>
+
+
+                <div class="col">
                 <div class="postButtonSection">
                   <button type="submit" class="btn btn-success">
-                    Add music to your list
+                    Add music
                   </button>
                 </div>
               </div>
+              </div>
+
+</div>
             </form>
       </div>
-      <h2>Browse all music in our database</h2>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-5">
+            <h2>Browse all music in our database</h2>
+
+          </div>
+          
+        
+        <div class="col-md-2" >
+          <!-- <label class="form-label">SortBy</label> -->
+          <h2>Sort By</h2>
+        </div>
+        <div class="col-md-2">
+  
+        <select
+                    class="form-select"
+                    type="form-control"
+                    id="sortSelectId"
+                    name="sortId"
+                  >
+                    <option>Alblum</option>
+                    <option>Genre</option>
+                    <option>Musician</option>
+                  </select>
+
+              </div>
+        <div class="col-md-4"> </div>
+
+      
+      </div>
+      </div>
+
       <div class="row gx-2" id="allMusic"></div>
     </main>
     <script
