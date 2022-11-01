@@ -130,8 +130,8 @@ function myMusicListDB() {
   };
 
   // Fetching user's music list in db
-  myDB.getList = async (userName) => {
-    console.log("getting user's list from db");
+  myDB.getList = async (user) => {
+    console.log("getting user's list from db", user);
     let client;
     try{
       client = new MongoClient(url);
@@ -140,8 +140,8 @@ function myMusicListDB() {
       await client.connect();
       console.log("db connected");
       const db = client.db(DB_name);
-      const usersFound = db.collection("user");
-      const res = await usersFound.find(userName).list;
+      const usersFound = db.collection("users");
+      const res = await usersFound.find({userName:user}).toArray();
       console.log("testing getList~~~~~~~~id",res);
 
       return res;
@@ -154,8 +154,9 @@ function myMusicListDB() {
       console.log("closing db connection");
     }  
   };
+
   myDB.updateList = async (music, user) => {
-    console.log("getting user's list from db", user, music);
+    console.log("getting user's list from db", music, user);
     let client;
     try{
       client = new MongoClient(url);
@@ -164,10 +165,10 @@ function myMusicListDB() {
       await client.connect();
       console.log("db connected");
       const db = client.db(DB_name);
-      const usersFound = db.collection("user");
+      const usersFound = db.collection("users");
       const res = await usersFound.updateOne(
         {userName : user}, 
-        {$push: {list : {music : music}}});
+        {$push: {songlist : music}});
         
       console.log("testing updateList~~~~~~~~",res);
 

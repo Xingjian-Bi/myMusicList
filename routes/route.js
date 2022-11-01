@@ -68,7 +68,7 @@ router.get("/getMusic/:sortID", async function (req, res) {
     // res.send({ recordedMusic: musicRes });
     res.send(musicRes);
   } catch (error) {
-    console.log("Get game posts error message: ", error);
+    console.log("Get music error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -80,11 +80,11 @@ router.get("/getList", async function (req, res) {
     // collection in database
     
     const listRes = await myMusicListDB.getList(req.session.userName);
-    console.log("Got user's list from db ", listRes);
+    console.log("Got user's list from db ");
     // res.send({ recordedMusic: musicRes });
     res.send(listRes);
   } catch (error) {
-    console.log("Get game posts error message: ", error);
+    console.log("Get list error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -94,12 +94,12 @@ router.put("/updateList", async function (req, res) {
   try {
     // Response of getting all game posts (as an array) from gameposts
     // collection in database
-    const listRes = await myMusicListDB.updateList(req.body.music,req.session.userName);
+    const listRes = await myMusicListDB.updateList(req.body,req.session.userName);
     console.log("Update user's list from db ", listRes);
     // res.send({ recordedMusic: musicRes });
     res.send(listRes);
   } catch (error) {
-    console.log("Get game posts error message: ", error);
+    console.log("Update List error message: ", error);
     res.status(400).send({ err: error });
   }
 });
