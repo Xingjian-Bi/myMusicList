@@ -182,8 +182,9 @@ async function loadlist (){
   async function getList() {
     const res = await fetch("/getList");
     const list = await res.json();
-    // console.log("render list", list.songlist);
-    renderList(list);
+    if (list[0].songlist){
+      renderList(list);
+    }
   }
 
   // Display all music fetched from getMusic
@@ -263,17 +264,6 @@ if (musicForm !== null && musicError !== null) {
     const resData = await resRawData.json();
     console.log("Got recorded music(s) ", resData);
     loadmusic();
-    // If music is already recorded
-    // Needs to do something
-    if (resData.existedMusic.length) {
-      musicError.style.display = "block";
-    }
-    // Otherwise, we don't display error error message
-    // and navigate to login page
-    else {
-      musicError.style.display = "none";
-      // loadmusic();
-    }
   };
 }
 
