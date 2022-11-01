@@ -1,5 +1,5 @@
 const { MongoClient, ObjectID} = require("mongodb");
-const url = "mongodb+srv://harry:HuQdiKKzUO43aPeD@webdev.v9plqok.mongodb.net/?retryWrites=true&w=majority";
+const url = process.env.MONGO_URL;
 const DB_name = "music-list-db";
 
 
