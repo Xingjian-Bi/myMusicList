@@ -52,7 +52,7 @@ function login(){
       // and navigate to login page
       else {
         registerError.style.display = "none";
-        window.location.href = "/login.html";
+        window.location.href = "/index.html";
       }
     };
   }
