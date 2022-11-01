@@ -11,7 +11,7 @@ async function loadmusic (){
   async function getMusic() {
     const res = await fetch("/getMusic");
     const music = await res.json();
-    console.log("render music", music);
+    // console.log("render music", music);
     renderMusic(music);
   }
 
@@ -20,14 +20,17 @@ async function loadmusic (){
   // Display all music fetched from getMusic
   async function renderMusic(music) {
     musicDiv.innerHTML = "";
-    console.log("render music", music);
+    // console.log("render music", music);
     // const list = await fetch("/getList");
 
     for (let m of music) {
     // create image in HTML
       const addToList = document.createElement("button");
       addToList.style.marginBottom = "0.5%";
-      addToList.music = m.title;
+      addToList.title = m.title;
+      addToList.musician = m.musician;
+      addToList.genre = m.genre;
+      addToList.album = m.album;
       addToList.bool = true;
       const plusSign = document.createElement("img");
       plusSign.src = "./images/plusSign.png";
@@ -35,26 +38,25 @@ async function loadmusic (){
       addToList.appendChild(plusSign); 
 
       // addToList button behavior
-      
       addToList.addEventListener("click", async(evt) => {
-        const name = evt.currentTarget.music;
-        console.log(name);
-        // list.push(button.music);
+        const song = evt.currentTarget;
         const newList = await fetch("/updateList", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            music: name}),
+            title: song.title,
+            musician: song.musician,
+            genre:song.genre,
+            album:song.genre,
+          }),
         });
-        // list = newList;
-        // console.log("testing frontend~~~~~~~~",newList);
-        // reload my palylist
-        // loadlist();
+        console.log("music added to user's db", newList);
+        loadlist();
       });
 
-      console.log("render m", m);
+      // console.log("render m", m);
       const mDiv = document.createElement("div");
 
       // mDiv.className = "col-xs-6 col-sm-4 card";
@@ -122,13 +124,11 @@ async function loadmusic (){
               comment: text,
             }),
         });
-
         if(!resRaw.ok){
           alert("comment can not be added");
         }else{
           location.reload();
         }
-
       });
 
       deleteBtn.addEventListener("click", async (event) => {
@@ -143,43 +143,34 @@ async function loadmusic (){
               musicID: m._id,
             }),
         });
-
         if(!resRaw.ok){
           alert("Music post can not be deleted");
         }else{
           location.reload();
         }
-
       });
-
-
       mDiv.appendChild(addToList);
       commentForm.appendChild(commentText);
       commentForm.appendChild(commentBtn);
       commentForm.appendChild(deleteBtn);
-
       mDiv.append(commentDiv);
       mDiv.append(commentForm);
-
       musicDiv.appendChild(mDiv);
-
-      
     }
   }
   getMusic();
-  // return index;
 }
 
 // Get playlist
 async function loadlist (){
   // Create musicDiv in HTML
-  const listDiv = document.querySelector("div#list");
+  const listDiv = document.querySelector("div#userlist");
 
   // Get all music from DB and call renderMusic
   async function getList() {
     const res = await fetch("/getList");
     const list = await res.json();
-    console.log("render list", list);
+    // console.log("render list", list.songlist);
     renderList(list);
   }
 
@@ -187,21 +178,30 @@ async function loadlist (){
   function renderList(list) {
     listDiv.innerHTML = "";
     console.log("render list", list);
-
-    for (let l of list) {
+    console.log("render songlist", list[0].songlist);
+    for (let l of list[0].songlist) {
     // create image in HTML
       console.log("render l", l);
       const lDiv = document.createElement("div");
 
       // lDiv.className = "col-xs-6 col-sm-4 card";
       lDiv.className = "card";
-      lDiv.style.width = "75%";
+      lDiv.style.width = "70%";
       lDiv.style.marginTop = "1%";
       lDiv.style.marginLeft = "10%";
       // mDiv.style.marginRight = "10%";
       lDiv.innerHTML = `
         <div class="card-header">
-            <label>Title: <output>${l}</output></label>
+            <label>Title: <output>${l.title}</output></label>
+        </div>
+        <div>
+            <label>Genre: <output>${l.genre}</output></label>
+            <br>
+            <label>Musician: <output>${l.musician}</output></label>
+            <br>
+            <label>Album: <output>${l.album}</output></label>
+
+        </div> 
         </div>
         `;
       listDiv.appendChild(lDiv);
@@ -266,7 +266,6 @@ if (musicForm !== null && musicError !== null) {
 }
 
 
-
-// loadlist();
+loadlist();
 loadmusic();
 
