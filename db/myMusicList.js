@@ -87,11 +87,15 @@ function myMusicListDB() {
       console.log("connect to db ---");
       await client.connect();
       console.log("db connected");
+      console.log("enter sort");
       const db = client.db(DB_name);
       const musicFound = db.collection(COLLECTION_NAME);
       const query = {};
       // returns the response of querying and getting all music
-      const res = await musicFound.find(query).toArray();
+      // const res = await musicFound.find(query).sort({ musician: 1 }).toArray();
+      const res = await musicFound.find(query).sort({ album: 1 }).toArray();
+      // const res = await musicFound.find(query).sort({ genre: 1 }).toArray();
+      
       // const res = await musicFound.find(query).sort({_id:-1}).toArray();
       return res;
       // if (res.password == user.passwordlogin) return true;
