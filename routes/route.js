@@ -19,17 +19,14 @@ router.post("/registerUser", async function (req, res) {
     // Response of finding a user
     // Returns an array of users that match the query of passed userName
     const findUserRes = await myMusicListDB.findUserName(userName);
-    console.log("Get user (user name) from db ", findUserRes);
 
     // If findUserRes array is empty then we call registerUser function
     if (!findUserRes.length) {
       const registerUserRes = await myMusicListDB.registerUser(user);
-      console.log("Created user in db", registerUserRes);
     }
     // Send findUserRes to frontend and it will update accordingly
     res.send({ users: findUserRes });
   } catch (error) {
-    console.log("login user error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -43,17 +40,12 @@ router.post("/login", async (req, res) => {
     if (userRes.length){
       req.session.userName = user.userName;
     }
-    // if (userRes){
-    //   res.redirect("/musicList");
-    // }
 
     res.send({ users: userRes });
 
   } catch(error){
-    console.log("login: error", error);
     res.status(400).send({err: error});
   }
-  // res.send("logged in! my music list is here: ");
 });
 
 // route for showing all recorded music
@@ -63,12 +55,8 @@ router.get("/getMusic/:sortID", async function (req, res) {
     // collection in database
 
     const musicRes = await myMusicListDB.getMusic(req.params.sortID);
-    console.log("Got all music from db ", musicRes);
-
-    // res.send({ recordedMusic: musicRes });
     res.send(musicRes);
   } catch (error) {
-    console.log("Get music error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -80,11 +68,8 @@ router.get("/getList", async function (req, res) {
     // collection in database
     
     const listRes = await myMusicListDB.getList(req.session.userName);
-    console.log("Got user's list from db ");
-    // res.send({ recordedMusic: musicRes });
     res.send(listRes);
   } catch (error) {
-    console.log("Get list error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -95,11 +80,8 @@ router.put("/updateList", async function (req, res) {
     // Response of getting all game posts (as an array) from gameposts
     // collection in database
     const listRes = await myMusicListDB.updateList(req.body,req.session.userName);
-    console.log("Update user's list from db ", listRes);
-    // res.send({ recordedMusic: musicRes });
     res.send(listRes);
   } catch (error) {
-    console.log("Update List error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -119,19 +101,15 @@ router.post("/recordMusic", async function (req, res) {
     // Response of finding a music
     // Returns an array of music that matches
     const searchMusic = await myMusicListDB.searchMusic(musicInfo);
-    console.log("Get music from db ", searchMusic);
 
     // If findMusic array is empty then we call recordMusic function
     if (!searchMusic.length) {
       const recordMusic = await myMusicListDB.recordMusic(music);
-      console.log("Recorded music in db", recordMusic);
     }
     // Send findMusic to frontend and it will update accordingly
     res.send({ existedMusic: searchMusic });
-    // res.send(searchMusic);
 
   } catch (error) {
-    console.log("login user error message: ", error);
     res.status(400).send({ err: error });
   }
   // What does this do?
@@ -142,12 +120,9 @@ router.post("/recordMusic", async function (req, res) {
 router.post("/musicComment", async (req, res) => {
   try{
     const commentRes = await myMusicListDB.musicComment(req.body.musicID, req.body.comment, req.session.userName);
-    console.log("Comment added", commentRes);
     res.redirect("/musicList.html");
-    // res.send({success: true});
 
   }catch(error){
-    console.log("music comment error message: ", error);
     res.status(400).send({ err: error });
   }
 });
@@ -155,11 +130,9 @@ router.post("/musicComment", async (req, res) => {
 router.post("/deleteMusic", async (req, res) => {
   try{
     const deleteRes = await myMusicListDB.deleteMusic(req.body.musicID);
-    console.log("Music deleted", deleteRes);
     res.redirect("/musicList.html");
 
   }catch(error){
-    console.log("music comment error message: ", error);
     res.status(400).send({ err: error });
   }
 
