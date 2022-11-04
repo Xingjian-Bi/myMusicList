@@ -65,7 +65,7 @@ router.get("/getMusic/:sortID", async function (req, res) {
     const musicRes = await myMusicListDB.getMusic(req.params.sortID);
     console.log("Got all music from db ", musicRes);
 
-    // res.send({ recordedMusic: musicRes });
+   
     res.send(musicRes);
   } catch (error) {
     console.log("Get music error message: ", error);
@@ -80,8 +80,8 @@ router.get("/getList", async function (req, res) {
     // collection in database
     
     const listRes = await myMusicListDB.getList(req.session.userName);
-    console.log("Got user's list from db ");
-    // res.send({ recordedMusic: musicRes });
+   
+    
     res.send(listRes);
   } catch (error) {
     console.log("Get list error message: ", error);
@@ -95,11 +95,11 @@ router.put("/updateList", async function (req, res) {
     // Response of getting all game posts (as an array) from gameposts
     // collection in database
     const listRes = await myMusicListDB.updateList(req.body,req.session.userName);
-    console.log("Update user's list from db ", listRes);
-    // res.send({ recordedMusic: musicRes });
+
+   
     res.send(listRes);
   } catch (error) {
-    console.log("Update List error message: ", error);
+    
     res.status(400).send({ err: error });
   }
 });
@@ -128,26 +128,25 @@ router.post("/recordMusic", async function (req, res) {
     }
     // Send findMusic to frontend and it will update accordingly
     res.send({ existedMusic: searchMusic });
-    // res.send(searchMusic);
+   
 
   } catch (error) {
-    console.log("login user error message: ", error);
+    //Yian: instead of console.log, show error in frontend?
     res.status(400).send({ err: error });
   }
-  // What does this do?
-  // res.sendFile(__dirname, "../public", "musicList.html");
+
 });
 
 //route for add music comment
 router.post("/musicComment", async (req, res) => {
   try{
     const commentRes = await myMusicListDB.musicComment(req.body.musicID, req.body.comment, req.session.userName);
-    console.log("Comment added", commentRes);
+    //Yian: instead of console.log, show error in frontend?
     res.redirect("/musicList.html");
-    // res.send({success: true});
+   
 
   }catch(error){
-    console.log("music comment error message: ", error);
+    //Yian: instead of console.log, show error in frontend?
     res.status(400).send({ err: error });
   }
 });
@@ -155,11 +154,11 @@ router.post("/musicComment", async (req, res) => {
 router.post("/deleteMusic", async (req, res) => {
   try{
     const deleteRes = await myMusicListDB.deleteMusic(req.body.musicID);
-    console.log("Music deleted", deleteRes);
+
     res.redirect("/musicList.html");
 
   }catch(error){
-    console.log("music comment error message: ", error);
+    //Yian: instead of console.log, show error in frontend?
     res.status(400).send({ err: error });
   }
 
