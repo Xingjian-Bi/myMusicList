@@ -34,7 +34,7 @@ function myMusicListDB() {
     console.log("Finding user called");
     let client;
     try {
-      // client = new MongoClient(URL, { useUnifiedTopology: true });
+      
       client = new MongoClient(url);
       console.log("Connecting to db");
       await client.connect();
@@ -113,16 +113,7 @@ function myMusicListDB() {
         const res = await (await musicFound.find(query).toArray()).reverse();
         return res;
       }
-      // returns the response of querying and getting all music
-      // const res = await musicFound.find(query).sort({ musician: 1 }).toArray();
-      // const res = await musicFound.find(query).sort({ album: 1 }).toArray();
-      // const res = await (await musicFound.find(query).toArray()).reverse();
-      // const res = await musicFound.find(query).sort({ genre: 1 }).toArray();
-
-      // const res = await musicFound.find(query).sort({_id:-1}).toArray();
-      // return res;
-      // if (res.password == user.passwordlogin) return true;
-      // return false;
+   
     } catch (error) {
       console.log(error);
     } finally {
@@ -147,8 +138,7 @@ function myMusicListDB() {
       console.log("testing getList~~~~~~~~id", res);
 
       return res;
-      // if (res.password == user.passwordlogin) return true;
-      // return false;
+    
     } catch (error) {
       console.log(error);
     } finally {
@@ -205,7 +195,7 @@ function myMusicListDB() {
       return res;
     } catch (error) {
       console.log(error);
-      // console.log(error.stack);
+  
     } finally {
       await client.close();
       console.log("closing db connection");
@@ -217,7 +207,7 @@ function myMusicListDB() {
     console.log("Register User called");
     let client;
     try {
-      // client = new MongoClient(URL, { useUnifiedTopology: true });
+     
       client = new MongoClient(url);
       console.log("Connecting to db");
       await client.connect();
